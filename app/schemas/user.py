@@ -2,10 +2,15 @@ from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 
 class UserBase(BaseModel):
+    fullname: str = Field(..., min_length=2)
     email: EmailStr
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8, description="Password must be at least 8 characters long")
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 class UserResponse(UserBase):
     id: int

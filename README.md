@@ -78,7 +78,7 @@ Below are the foundational routes currently available for consumption by your Vu
 
 | Method | Endpoint | Description | Payload Body (JSON) | Expected Response |
 | :--- | :--- | :--- | :--- | :--- |
-| **`POST`** | `/api/auth/register` | Registers a new user account into the SQLite Database. | `{ "email": "...", "password": "..." }` | Returns the created user object (id, email, etc). |
+| **`POST`** | `/api/auth/register` | Registers a new user account into the SQLite Database. | `{ "fullname": "...", "email": "...", "password": "..." }` | Returns the created user object (id, fullname, email, etc). |
 | **`POST`** | `/api/auth/login` | Authenticates an existing user and retrieves a stateless access token. | `{ "email": "...", "password": "..." }` | `{ "access_token": "...", "token_type": "bearer" }` |
 
 > *Note: Both routes require the password payload to be completely valid and at least 8 characters long.*

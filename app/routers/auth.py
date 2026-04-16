@@ -4,7 +4,7 @@ from datetime import timedelta
 
 from app.database.session import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse, Token
+from app.schemas.user import UserCreate, UserResponse, Token, UserLogin
 from app.core.security import get_password_hash, verify_password, create_access_token
 from app.core.config import settings
 
@@ -26,6 +26,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # Create new user
     hashed_password = get_password_hash(user.password)
     new_user = User(
+        fullname=user.fullname,
         email=user.email,
         hashed_password=hashed_password
     )
@@ -36,9 +37,8 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 @router.post("/login", response_model=Token)
-def login_user(user: UserCreate, db: Session = Depends(get_db)):
-    # Basic login with email and password (for now just reusing UserCreate for simpler payload)
-    # Ideally, you'd use OAuth2PasswordRequestForm, but we'll keep it simple for generic JSON body.
+def login_user(user: UserLogin, db: Session = Depends(get_db)):
+    # Basic login with email and password
     db_user = db.query(User).filter(User.email == user.email).first()
     if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(
